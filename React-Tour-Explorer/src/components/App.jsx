@@ -12,7 +12,7 @@ const App = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('https://api.example.com/tours'); // Replace with your API URL
+      const response = await fetch('https://course-api.com/react-tours-project'); // Replace with your API URL
       if (!response.ok) {
         throw new Error('Failed to fetch tours');
       }
