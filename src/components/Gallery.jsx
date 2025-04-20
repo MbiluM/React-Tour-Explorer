@@ -1,28 +1,30 @@
-import React from "react";
-import TourCard from "./TourCard"; // Assuming TourCard is a child component
+import React, { useState } from "react";
+import TourCard from "./TourCard";
 
-const Gallery = ({ tours, loading, error, selectedDestination }) => {
-  // Filter tours based on the selected destination
-  const filteredTours = tours.filter((tour) =>
+const Gallery = ({ tours, selectedDestination, onRefresh }) => {
+  const [filteredTours, setFilteredTours] = useState(tours);
+
+  const handleRemove = (id) => {
+    setFilteredTours(filteredTours.filter((tour) => tour.id !== id));
+  };
+
+  const filteredList = filteredTours.filter((tour) =>
     selectedDestination ? tour.destination === selectedDestination : true
   );
 
-  if (loading) {
-    return <p>Loading tours...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
-
-  if (filteredTours.length === 0) {
-    return <p>No tours available for the selected destination.</p>;
+  if (filteredList.length === 0) {
+    return (
+      <div>
+        <p>No tours left. Refresh to reload.</p>
+        <button onClick={onRefresh}>Refresh</button>
+      </div>
+    );
   }
 
   return (
     <div className="gallery">
-      {filteredTours.map((tour) => (
-        <TourCard key={tour.id} tour={tour} />
+      {filteredList.map((tour) => (
+        <TourCard key={tour.id} tour={tour} onRemove={handleRemove} />
       ))}
     </div>
   );
